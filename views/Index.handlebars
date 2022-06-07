@@ -1,0 +1,46 @@
+    <div class="py-4">
+      <h2>Lista de participantes</h2>
+
+      <hr/>
+
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Años de experiencia</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+
+        <tbody id="cuerpo">
+
+          {{#each registros}} 
+
+          <tr>
+            <th scope="row">{{this.id}}</th>
+            <td><img src='/assets/img/{{this.foto}}' style='width:100px;'></td>
+            <td>{{this.nombre}}</td>
+            <td>{{this.anos_experiencia}}</td>
+            <td>{{this.especialidad}}</td>
+            <td class="estado font-weight-bold">{{this.estado}}</td>
+          </tr>
+
+          {{/each}}
+
+          </tr>
+        </tbody>
+      </table>
+      <a href="/login">Iniciar Sesión</a> |
+      <a href="/registro">Registrarme</a>
+    </div>
+
+<script>
+$('.estado').each(function (index, element) {
+  $(element).text() == 'true'
+    ? $(element).addClass('text-success').text('Aprobado')
+    : $(element).addClass('text-warning').text('En revisión');
+});
+</script>
