@@ -1,54 +1,36 @@
+<div>
+  <div class="py-4">
+    <h2>Ingrese un nuevo plato</h2>
+
+    <form action="/admin" method="post" enctype="multipart/form-data">
+      <div class="form-group row w-50 m-auto">
+        <div class="form-group col-12">
+          <label>Nombre del plato</label>
+          <input class="form-control m-auto" name="nombre" />
+        </div>
+        <div class="form-group col-12">
+          <label>Descripción</label>
+          <input class="form-control m-auto" name="descripcion" />
+        </div>
+        <div class="form-group col-12">
+          <label>Precio</label>
+          <input class="form-control m-auto" name="precio" />
+        </div>
+      </div>
+      <div class="form-group col-12 mt-3">
+          <label>Foto</label>
+          <input type="file" name="foto" />
+        </div>
+
+      <button type="submit" class="btn btn-info mb-5 mt-3">Ingresar plato</button>
+    </form>
+  </div>
+
+</div>
 
 
-    <div class="py-4">
-      <h2>Administración</h2>
-      <hr class="w-50" />
-
-      <table class="table w-50 m-auto">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Foto</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Años de experiencia</th>
-            <th scope="col">Especialidad</th>
-            <th scope="col">Estado</th>
-          </tr>
-        </thead>
-        <tbody id="cuerpo">
-
-          {{#each registros}}
-          <tr>
-            <th scope="row">{{this.id}}</th>
-            <td><img src='/assets/img/{{this.foto}}' style='width:100px;'></td>
-            <td>{{this.nombre}}</td>
-            <td>{{this.anos_experiencia}}</td>
-            <td>{{this.especialidad}}</td>
-            <td><input type="checkbox" {{#if this.estado}} checked {{/if}} onclick="changeStatus({{this.id}}, this)"></td>
-          </tr>
-
-          {{/each}}
-
-        </tbody>
-      </table>
-    </div>
 
 <script>
-
-  const changeStatus = async (id, e) => {
-    const auth = e.checked
-    try {
-      await axios.put("/status", {
-        id,
-        auth
-      })
-      alert(auth ? "usuario verificado" : "usuario no verificado");
-    }
-    catch ({response}) {
-      const { data } = response;
-      const { error } = data;
-      alert(error)
-    }
-  }
+  $('button').click(async (e) => { e.preventDefault(); $('form').submit(); });
 
 </script>

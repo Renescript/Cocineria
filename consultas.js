@@ -8,18 +8,16 @@ const config = {
     user: DB_USER,
     host: "localhost",
     password: DB_PASSWORD,
-    database: "skatepark",
+    database: "cocina",
     port: 5432,
 };
 
 const pool = new Pool(config);
 
-
-
-const nuevoRegistro = async(email, nombre, password, anos_experiencia, especialidad, foto) => {
+const nuevaComida = async(nombre, descripcion, precio, foto) => {
     const query = {
-        text: `INSERT INTO skaters (email, nombre, password, anos_experiencia, especialidad, foto, estado) values ($1,$2,$3,$4,$5,$6,false) RETURNING *`,
-        values: [email, nombre, password, anos_experiencia, especialidad, foto],
+        text: `INSERT INTO comidas (nombre, descripcion, precio, foto) values ($1,$2,$3,$4) RETURNING *`,
+        values: [nombre, descripcion, precio, foto],
     }
     try {
         const respuesta = await pool.query(query);
@@ -29,10 +27,10 @@ const nuevoRegistro = async(email, nombre, password, anos_experiencia, especiali
     }
 }
 
-const getRegistros = async() => {
+const getComidas= async() => {
     const query = {
-        text: 'SELECT * from skaters order by id asc',
-        name: 'nuevoRegistro',
+        text: 'SELECT * from comidas order by id asc',
+        name: 'nuevaComida',
     }
         try {
             const respuesta = await pool.query(query);
@@ -42,69 +40,12 @@ const getRegistros = async() => {
         }
     };
 
-const setStatus = async(id, auth) => {
+
+
+const eliminarComida = async(id) => {
     const query = {
-        text: 'UPDATE skaters SET estado = $1 where id = $2 RETURNING *',
-        values: [auth, id],
-        name: 'setRegistro',
-    }
-    try {
-        const respuesta = await pool.query(query);
-        return respuesta.rows;
-        } catch (error) {
-            return error;
-        }
-    };
-
-    const getUsuario = async(parametros) => {
-        const query = {
-            text: "select * from skaters where email = $1 and password = $2;",
-            values: parametros,
-            name: 'obtenerUsuario',
-        };
-        try {
-            const respuesta = await pool.query(query);
-            return respuesta.rows[0];
-        } catch (error) {
-            return error;
-        }
-    };
-const actualizarUsuario = async(usuario) => {
-    console.log(usuario);
-    const query = {
-        text: 'update skaters set nombre= $1, password= $2, anos_experiencia= $3, especialidad=$4 where email= $5 RETURNING *;',
-        values: Object.values(usuario),
-        name: 'actualizarUsuario',
-    };
-    try {
-        const respuesta = await pool.query(query);
-        console.log(respuesta.rows[0]);
-        return respuesta.rows[0];
-    } catch (error) {
-        console.log(error);
-        return error;
-    }
-
-};
-
-const getUserMail = async(email) => {
-    const query = {
-        text: 'select * from skaters where email= $1;',
-        values: [email],
-        name: 'usuarioPorEmail'
-    };
-    try {
-        const respuesta = await pool.query(query);
-        return respuesta.rows[0];
-    } catch (error) {
-
-    }
-};
-
-const eliminarUsuario = async(email) => {
-    const query = {
-        text: 'DELETE FROM skaters WHERE email =$1 RETURNING *;',
-        values: [email],
+        text: 'DELETE FROM comidas WHERE id =$1 RETURNING *;',
+        values: [id],
         name: 'deleteUser'
     };
     try {
@@ -117,4 +58,4 @@ const eliminarUsuario = async(email) => {
 
 
 
-module.exports = { nuevoRegistro, getRegistros, setStatus, getUsuario, actualizarUsuario, getUserMail, eliminarUsuario };
+module.exports = { nuevaComida, getComidas, eliminarComida };
